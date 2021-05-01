@@ -1,0 +1,27 @@
+{
+  "name": "adakerja-challenge-nodejs",
+  "version": "1.0.0",
+  "description": "adakerja task interview",
+  "main": "/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/padunk/adakerja-challenge-nodejs.git"
+  },
+  "keywords": [
+    "node",
+    "messenger",
+    "bot"
+  ],
+  "author": "Abraham Anak Agung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/padunk/adakerja-challenge-nodejs/issues"
+  },
+  "homepage": "https://github.com/padunk/adakerja-challenge-nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
