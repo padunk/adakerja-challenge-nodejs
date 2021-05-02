@@ -2,7 +2,7 @@ const bent = require("bent");
 const {
     calculateNextBirthday,
     validateDate,
-    validateYesNo,
+    validateYes,
 } = require("./helpers.js");
 
 const initialValue = {
@@ -21,7 +21,26 @@ const responses = {
         text:
             "What is your birthday? Please reply with this format: YYYY-MM-DD",
     },
-    3: { text: "Do you want to know how many days till your next birthday?" },
+    // 3: { text: "Do you want to know how many days till your next birthday?" },
+    3: {
+        attachment: {
+            type: "template",
+            payload: {
+                template_type: "generic",
+                elements: [
+                    {
+                        title:
+                            "Do you want to know how many days till your next birthday?",
+                        subtitle: "Tap a button to answer.",
+                        buttons: [
+                            { type: "postback", title: "Yes!", payload: "yes" },
+                            { type: "postback", title: "No", payload: "no" },
+                        ],
+                    },
+                ],
+            },
+        },
+    },
 };
 
 function handleMessage(sender_psid, received_message) {
@@ -38,14 +57,18 @@ function handleMessage(sender_psid, received_message) {
             case 2:
                 if (!validateDate(received_message.text)) {
                     response.text = "Please reply with this format: YYYY-MM-DD";
+                    callSendAPI(sender_psid, response);
+                    return;
                 } else {
                     messageBySender[sender_psid].birthDate =
                         received_message.text;
                 }
                 break;
             case 3:
-                if (!validateYesNo(received_message.text)) {
+                if (!validateYes(received_message.text)) {
                     response.text = "Goodbye 👋";
+                    callSendAPI(sender_psid, response);
+                    return;
                 } else {
                     messageBySender[
                         sender_psid
@@ -64,13 +87,31 @@ function handleMessage(sender_psid, received_message) {
     if (messageBySender[sender_psid].key > 3) {
         response.text = messageBySender[sender_psid].daysTillNextBirthday;
     } else {
-        response.text = responses[messageBySender[sender_psid].key].text;
+        response = responses[messageBySender[sender_psid].key];
     }
     console.log(messageBySender);
     callSendAPI(sender_psid, response);
 }
 
-function handlePostback(sender_psid, received_postback) {}
+function handlePostback(sender_psid, received_postback) {
+    let response = { text: "" };
+    if (!validateYes(received_postback.payload)) {
+        response.text = "Goodbye 👋";
+        callSendAPI(sender_psid, response);
+        return;
+    }
+
+    messageBySender[sender_psid].daysTillNextBirthday = calculateNextBirthday(
+        messageBySender[sender_psid].birthDate
+    );
+    messageBySender[sender_psid].key++;
+    if (messageBySender[sender_psid].key > 3) {
+        response.text = messageBySender[sender_psid].daysTillNextBirthday;
+    } else {
+        response = responses[messageBySender[sender_psid].key];
+    }
+    callSendAPI(sender_psid, response);
+}
 
 async function callSendAPI(sender_psid, response) {
     const request_body = {
