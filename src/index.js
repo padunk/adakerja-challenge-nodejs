@@ -3,6 +3,7 @@
 require('dotenv').config()
 const express = require('express')
 const verifyWebhook = require('./verify-webhook')
+const { handleMessage, handlePostback } = require('./messages')
 
 const app = express()
 const PORT = 8080
@@ -21,6 +22,13 @@ app.post('/webhook', (req, res) => {
             console.log(webhook_event)
             const sender_psid = webhook_event.sender.id
             console.log("Sender PSID:", sender_psid)
+
+            if (webhook_event.message) {
+                handleMessage(sender_psid, webhook_event.message)
+            } else if (webhook_event.postback) {
+                handlePostback(sender_psid, webhook_event.postback)
+            }
+
             res.status(200).send('EVENT_RECEIVED')
         })
     }else {
