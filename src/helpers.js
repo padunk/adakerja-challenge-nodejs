@@ -22,10 +22,10 @@ function validateDate(date) {
  * @param {string} reply - user reply text
  * @returns string
  */
-function validateYesNo(reply) {
-    const valid = ["yeah", "yes", "yup", "no", "nah", "nope"];
+function validateYes(reply) {
+    const valid = ["yeah", "yes", "yup"];
 
-    let filterReply = reply.trim();
+    let filterReply = reply.trim().toLowerCase();
     filterReply = filterReply.replace(/\W/, "");
     return valid.includes(reply);
 }
@@ -60,6 +60,6 @@ function calculateNextBirthday(date) {
 
 module.exports = {
     validateDate,
-    validateYesNo,
+    validateYes,
     calculateNextBirthday,
 };
