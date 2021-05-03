@@ -26,10 +26,10 @@ function validateDate(date) {
  * @returns boolean
  */
 function validateYes(reply) {
-    if (typeof date !== "string") {
+    if (typeof reply !== "string") {
         return false;
     }
-    const valid = ["y, ok, yeah", "yes", "yup"];
+    const valid = ["y", "ok", "yeah", "yes", "yup"];
 
     let filterReply = reply.trim().toLowerCase();
     filterReply = filterReply.replace(/\W/, "");
@@ -39,11 +39,11 @@ function validateYes(reply) {
 /**
  * calculate next birthday in days
  * @param {string} date - in YYYY-MM-DD format
- * @returns string
+ * @returns string | undefined
  */
 function calculateNextBirthday(date) {
     if (typeof date !== "string") {
-        return false;
+        return;
     }
     const year = getYear(Date.now());
     let nowMonth = getMonth(Date.now());
