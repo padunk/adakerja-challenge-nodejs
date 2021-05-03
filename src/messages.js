@@ -43,6 +43,12 @@ const responses = {
     },
 };
 
+/**
+ * handle message function from user
+ * @param {string} sender_psid - sender id
+ * @param {object} received_message - {text: string}
+ * @returns void | undefined
+ */
 function handleMessage(sender_psid, received_message) {
     let response = { text: "" };
     if (!messageBySender.hasOwnProperty(sender_psid)) {
@@ -93,6 +99,12 @@ function handleMessage(sender_psid, received_message) {
     callSendAPI(sender_psid, response);
 }
 
+/**
+ * handle postback value from user
+ * @param {string} sender_psid - sender string
+ * @param {object} received_postback : {payload: string}
+ * @returns void | undefined
+ */
 function handlePostback(sender_psid, received_postback) {
     let response = { text: "" };
     if (!validateYes(received_postback.payload)) {
@@ -113,6 +125,11 @@ function handlePostback(sender_psid, received_postback) {
     callSendAPI(sender_psid, response);
 }
 
+/**
+ *
+ * @param {string} sender_psid - sender id
+ * @param {object} response - response object
+ */
 async function callSendAPI(sender_psid, response) {
     const request_body = {
         recipient: {
