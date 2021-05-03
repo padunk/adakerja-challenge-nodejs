@@ -10,6 +10,9 @@ const getYear = require("date-fns/getYear");
  * @returns boolean
  */
 function validateDate(date) {
+    if (typeof date !== "string") {
+        return false;
+    }
     const dateRegex = /\d{4}-\d{2}-\d{2}/;
     if (date.length !== 10 || !dateRegex.test(date)) {
         return false;
@@ -20,10 +23,13 @@ function validateDate(date) {
 /**
  * check user reply text
  * @param {string} reply - user reply text
- * @returns string
+ * @returns boolean
  */
 function validateYes(reply) {
-    const valid = ["yeah", "yes", "yup"];
+    if (typeof date !== "string") {
+        return false;
+    }
+    const valid = ["y, ok, yeah", "yes", "yup"];
 
     let filterReply = reply.trim().toLowerCase();
     filterReply = filterReply.replace(/\W/, "");
@@ -36,6 +42,9 @@ function validateYes(reply) {
  * @returns string
  */
 function calculateNextBirthday(date) {
+    if (typeof date !== "string") {
+        return false;
+    }
     const year = getYear(Date.now());
     let nowMonth = getMonth(Date.now());
     let nowDate = getDate(Date.now());
